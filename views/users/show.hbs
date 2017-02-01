@@ -1,0 +1,19 @@
+<h3>{{name}}</h3>
+
+<p>Name: {{name}}</p>
+<p>Email: {{email}}</p>
+<p>Age: {{age}}</p>
+<div class="user-posts">
+  <p>Posts:</p>
+  <ul>
+    {{#each posts}}
+      <li>{{description}}</li>
+    {{/each}}
+  </ul>
+</div>
+
+<div class="controls">
+  <a class="new-post" href="/users/{{id}}/posts/new">Add new post</a>
+  <br>
+  <a href="/users">Back to users index</a>
+</div>
