@@ -1,10 +1,13 @@
 var Publisher = require('../models/Publisher');
+var _ = require('underscore');
 
 exports.index = function(req, res, next) {
   Publisher
     .query()
-    .eager('authors')
+    .eager('[authors, authors.books]')
     .then(function(data){
+      // res.json(data);
+      var booksArr = _.chain(data).pluck('authors').flatten().pluck('books').flatten().value();
       res.json({
         data: data.map(function(publisher){
           return {
@@ -19,6 +22,11 @@ exports.index = function(req, res, next) {
                 data: publisher.authors.map(function(author){
                   return {type: 'authors', id: author.id}
                 })
+              },
+              books: {
+                data: booksArr.map(function(book){
+                  return {type: 'books', id: book.id}
+                })
               }
             },
             included: publisher.authors.map(function(author){
@@ -30,7 +38,16 @@ exports.index = function(req, res, next) {
                   age: author.age
                 }
               }
-            })
+            }).concat(booksArr.map(function(book){
+              return {
+                type: 'books',
+                id: book.id,
+                attributes: {
+                  title: book.title,
+                  description: book.description
+                }
+              }
+            }))
           }
         })
       });

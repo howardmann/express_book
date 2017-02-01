@@ -45,8 +45,9 @@ describe('Publishers', function(){
         res.body.data[0].attributes.country.should.equal('UK');
         res.body.data[0].should.have.property('relationships');
         res.body.data[0].should.have.property('included');
-        res.body.data[0].included.length.should.equal(2);
+        res.body.data[0].included.length.should.equal(10);
         res.body.data[0].relationships.should.have.property('authors');
+        res.body.data[0].relationships.should.have.property('books');
         done();
       })
   });
