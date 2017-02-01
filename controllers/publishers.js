@@ -58,8 +58,9 @@ exports.show = function(req, res, next) {
   Publisher
     .query()
     .findById(req.params.id)
-    .eager('authors')
+    .eager('[authors, authors.books]')
     .then(function(publisher){
+      var booksArr = _.chain(publisher.authors).pluck('books').flatten().value();
       res.json({
         data: {
           type: 'publishers',
@@ -73,6 +74,11 @@ exports.show = function(req, res, next) {
               data: publisher.authors.map(function(author){
                 return {type: 'authors', id: author.id}
               })
+            },
+            books: {
+              data: booksArr.map(function(book){
+                return {type: 'books', id: book.id}
+              })
             }
           },
           included: publisher.authors.map(function(author){
@@ -84,7 +90,16 @@ exports.show = function(req, res, next) {
                 age: author.age
               }
             }
-          })
+          }).concat(booksArr.map(function(book){
+            return {
+              type: 'books',
+              id: book.id,
+              attributes: {
+                title: book.title,
+                description: book.description
+              }
+            }
+          }))
         }
       })
     }, next)
