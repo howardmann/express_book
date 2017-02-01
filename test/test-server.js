@@ -78,17 +78,23 @@ describe('Publishers', function(){
     chai.request(app)
       .post('/publishers')
       .send({
-        name: 'New publisher',
-        country: 'Germany'
+        data: {
+          type: 'publishers',
+          attributes: {
+            name: 'New publisher',
+            country: 'Germany'
+          }
+        }
       })
       .end(function(err, res){
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.should.have.property('name');
-        res.body.name.should.equal('New publisher');
-        res.body.should.have.property('country');
-        res.body.country.should.equal('Germany');
+        res.body.should.have.property('data');
+        res.body.data.should.have.property('attributes');
+        res.body.data.attributes.name.should.equal('New publisher');
+        res.body.data.attributes.should.have.property('country');
+        res.body.data.attributes.country.should.equal('Germany');
         done();
       });
   });
@@ -143,7 +149,43 @@ describe('Authors', function(){
         res.body.data.included.attributes.name.should.equal('Random House');
         done();
       })
-  })
+  });
+
+  it('should add a SINGLE author on /authors POST', function(done){
+    chai.request(app)
+      .post('/authors')
+      .send({
+        data: {
+      		type: "authors",
+      		attributes: {
+      			name: "Howie Mann",
+      			age: 21
+      		},
+      		relationships: {
+      			publisher: {
+      				data: {
+      					type: "publishers",
+      					id: 2
+      				}
+      			}
+      		}
+      	}
+      })
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('data');
+        res.body.data.should.have.property('attributes');
+        res.body.data.attributes.name.should.equal('Howie Mann');
+        res.body.data.attributes.should.have.property('age');
+        res.body.data.attributes.age.should.equal(21);
+        res.body.data.should.have.property('relationships');
+        res.body.data.relationships.should.have.property('publisher');
+        done();
+      });
+  });
+
 });
 
 describe('Books',function(){

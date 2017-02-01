@@ -108,9 +108,20 @@ exports.show = function(req, res, next) {
 exports.create = function(req, res, next) {
   Publisher
     .query()
-    .insertAndFetch(req.body)
+    .insertAndFetch({
+      name: req.body.data.attributes.name,
+      country: req.body.data.attributes.country
+    })
     .then(function(publisher){
-      console.log(req.body);
-      res.json(publisher);
+      res.json({
+        data: {
+          type: 'publishers',
+          id: publisher.id,
+          attributes: {
+            name: publisher.name,
+            country: publisher.country
+          }
+        }
+      });
     }, next)
 };

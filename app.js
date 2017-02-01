@@ -35,8 +35,10 @@ app.set('view engine', 'hbs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true })); // use x-www-form-urlencoded used for processing submitted forms from the front end app
+app.use(bodyParser.json()); // parse json bodies that come in from the front end app
+app.use(bodyParser.json({type: 'application/vnd.api+json'})); // THIS ALLOWS ACCEPTING EMBER DATA BECAUSE JSON API FORMAT
+
 app.use(cookieParser());
 
 // ===BP: ADD METHOD OVERRIDE TO ALLOW FORMS TO SUBMIT DELETE AND PUT REQUESTS

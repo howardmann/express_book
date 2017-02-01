@@ -45,6 +45,7 @@ router
 // AUTHORS API FORMAT
 router
   .get('/authors', authors.index)
+  .post('/authors', authors.create)
   .get('/authors/:id', authors.show)
 
 // BOOKS API FORMAT
