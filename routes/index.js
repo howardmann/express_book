@@ -4,6 +4,8 @@ var router = express.Router();
 // Require controllers
 var users = require('../controllers/users.js');
 var posts = require('../controllers/posts.js');
+var publishers = require('../controllers/publishers.js');
+var authors = require('../controllers/authors.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -33,6 +35,15 @@ router
     .get('/users/:id/posts/new', posts.newUser)
     .post('/users/:id/posts', posts.createUser);
 
+// PUBLISHER API FORMAT
+router
+  .get('/publishers', publishers.index)
+  .get('/publishers/:id', publishers.show)
+
+// AUTHORS API FORMAT
+router
+  .get('/authors', authors.index)
+  .get('/authors/:id', authors.show)
 
 
 
