@@ -39,6 +39,7 @@ router
 // PUBLISHER API FORMAT
 router
   .get('/publishers', publishers.index)
+  .post('/publishers', publishers.create)
   .get('/publishers/:id', publishers.show)
 
 // AUTHORS API FORMAT

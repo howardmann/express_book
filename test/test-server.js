@@ -45,7 +45,7 @@ describe('Publishers', function(){
         res.body.data[0].attributes.country.should.equal('UK');
         res.body.data[0].should.have.property('relationships');
         res.body.data[0].should.have.property('included');
-        res.body.data[0].included.length.should.equal(10);
+        res.body.data[0].included.length.should.equal(5);
         res.body.data[0].relationships.should.have.property('authors');
         res.body.data[0].relationships.should.have.property('books');
         done();
@@ -67,12 +67,32 @@ describe('Publishers', function(){
         res.body.data.attributes.country.should.equal('China');
         res.body.data.should.have.property('relationships');
         res.body.data.should.have.property('included');
-        res.body.data.included.length.should.equal(3);
+        res.body.data.included.length.should.equal(6);
         res.body.data.relationships.should.have.property('authors');
 
         done();
       })
-  })
+  });
+
+  it('should add a SINGLE publisher on /publishers POST', function(done){
+    chai.request(app)
+      .post('/publishers')
+      .send({
+        name: 'New publisher',
+        country: 'Germany'
+      })
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('name');
+        res.body.name.should.equal('New publisher');
+        res.body.should.have.property('country');
+        res.body.country.should.equal('Germany');
+        done();
+      });
+  });
+
 });
 
 describe('Authors', function(){

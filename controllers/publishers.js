@@ -7,9 +7,9 @@ exports.index = function(req, res, next) {
     .eager('[authors, authors.books]')
     .then(function(data){
       // res.json(data);
-      var booksArr = _.chain(data).pluck('authors').flatten().pluck('books').flatten().value();
       res.json({
         data: data.map(function(publisher){
+          var booksArr = _.chain(publisher.authors).pluck('books').flatten().value();
           return {
             type: 'publishers',
             id: publisher.id,
@@ -102,5 +102,15 @@ exports.show = function(req, res, next) {
           }))
         }
       })
+    }, next)
+};
+
+exports.create = function(req, res, next) {
+  Publisher
+    .query()
+    .insertAndFetch(req.body)
+    .then(function(publisher){
+      console.log(req.body);
+      res.json(publisher);
     }, next)
 };
