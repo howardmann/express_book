@@ -17,7 +17,7 @@ Book.relationMappings = {
     // We use __dirname to avoid require loops
     modelClass: __dirname + '/Author',
     join: {
-      from: 'books.user_id',
+      from: 'books.author_id',
       to: 'authors.id'
     }
   }

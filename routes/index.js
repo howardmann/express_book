@@ -6,6 +6,7 @@ var users = require('../controllers/users.js');
 var posts = require('../controllers/posts.js');
 var publishers = require('../controllers/publishers.js');
 var authors = require('../controllers/authors.js');
+var books = require('../controllers/books.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -45,6 +46,9 @@ router
   .get('/authors', authors.index)
   .get('/authors/:id', authors.show)
 
-
+// BOOKS API FORMAT
+router
+  .get('/books', books.index)
+  .get('/books/:id', books.show)
 
 module.exports = router;
