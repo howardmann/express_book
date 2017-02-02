@@ -7,6 +7,7 @@ var posts = require('../controllers/posts.js');
 var publishers = require('../controllers/publishers.js');
 var authors = require('../controllers/authors.js');
 var books = require('../controllers/books.js');
+var fans = require('../controllers/fans.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -36,7 +37,7 @@ router
     .get('/users/:id/posts/new', posts.newUser)
     .post('/users/:id/posts', posts.createUser);
 
-// PUBLISHER API FORMAT
+// PUBLISHER EMBER JSONAPI FORMAT
 router
   .get('/publishers', publishers.index)
   .post('/publishers', publishers.create)
@@ -45,15 +46,20 @@ router
   .patch('/publishers/:id', publishers.update)
   .delete('/publishers/:id', publishers.destroy)
 
-// AUTHORS API FORMAT
+// AUTHORS EMBER JSONAPI FORMAT
 router
   .get('/authors', authors.index)
   .post('/authors', authors.create)
   .get('/authors/:id', authors.show)
 
-// BOOKS API FORMAT
+// BOOKS EMBER JSONAPI FORMAT
 router
   .get('/books', books.index)
   .get('/books/:id', books.show)
+
+// FANS RESTAPI FORMAT
+router
+  .get('/fans', fans.index)
+  .get('/fans/:id', fans.show)
 
 module.exports = router;

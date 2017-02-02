@@ -1,5 +1,6 @@
 var Model = require('objection').Model;
 var Book = require('./Book');
+var Fan = require('./Fan');
 
 // Extends Model constructor.
 function Author() {
@@ -30,6 +31,14 @@ Author.relationMappings = {
     join: {
       from: 'authors.id',
       to: 'books.author_id'
+    }
+  },
+  books: {
+    relation: Model.HasManyRelation,
+    modelClass: Fan,
+    join: {
+      from: 'authors.id',
+      to: 'fans.author_id'
     }
   }
 };

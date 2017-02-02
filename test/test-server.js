@@ -45,7 +45,7 @@ describe('Publishers', function(){
         res.body.data[0].attributes.country.should.equal('UK');
         res.body.data[0].should.have.property('relationships');
         res.body.data[0].should.have.property('included');
-        res.body.data[0].included.length.should.equal(5);
+        res.body.data[0].included.length.should.equal(4);
         res.body.data[0].relationships.should.have.property('authors');
         res.body.data[0].relationships.should.have.property('books');
         done();
@@ -146,8 +146,6 @@ describe('Publishers', function(){
           });
       });
   });
-
-
 });
 
 describe('Authors', function(){
@@ -290,6 +288,50 @@ describe('Books',function(){
   });
 
 });
+
+describe('Fans',function(){
+  beforeEach(reset);
+  afterEach(reset);
+
+  it('should list ALL fans on /fans GET', function(done){
+    chai.request(app)
+      .get('/fans')
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('fans');
+        res.body.fans.should.be.a('array');
+        res.body.fans.length.should.equal(7);
+        res.body.fans[0].should.have.property('id');
+        res.body.fans[0].should.have.property('name');
+        res.body.fans[0].should.have.property('author_id');
+        res.body.fans[0].should.have.property('author');
+        res.body.fans[0].author.should.have.property('publisher');
+        done();
+      })
+  });
+
+  it('should list a SINGLE fan on /fans/:id GET', function(done){
+    chai.request(app)
+      .get('/fans/1')
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('fan');
+        res.body.fan.should.have.property('id');
+        res.body.fan.should.have.property('name');
+        res.body.fan.name.should.equal('Harry Stiles');
+        res.body.fan.should.have.property('author_id');
+        res.body.fan.should.have.property('author');
+        res.body.fan.author.should.have.property('publisher');
+        res.body.fan.author.name.should.equal('John Smith');
+        done();
+      })
+  });
+});
+
 
 // describe('Posts', function() {
 //   // Before each test we rollback the migrations and run the seed file again

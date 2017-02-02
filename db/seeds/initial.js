@@ -28,7 +28,21 @@ exports.seed = function(knex, Promise) {
     {title: 'World apart', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam aspernatur odit asperiores, iste quaerat, totam.', author_id: knex('authors').where({name: 'Jane Janet'}).select('id')}
   ];
 
+  // Adding fans based RESTful API format to test RESTAPI adapter serializer
+  var fans = [
+    {name: 'Harry Stiles', age: 10, author_id: knex('authors').where({name: 'John Smith'}).select('id')},
+    {name: 'Groucho Marx', age: 6, author_id: knex('authors').where({name: 'John Smith'}).select('id')},
+    {name: 'Harpo Marx', age: 12, author_id: knex('authors').where({name: 'Cao Cao'}).select('id')},
+    {name: 'Nut Man', age: 3, author_id: knex('authors').where({name: 'Cao Cao'}).select('id')},
+    {name: 'Caleb Jones', age: 5, author_id: knex('authors').where({name: 'Cao Cao'}).select('id')},
+    {name: 'Mindy Mally', age: 40, author_id: knex('authors').where({name: 'JK Rowling'}).select('id')},
+    {name: 'Joll Green', age: 35, author_id: knex('authors').where({name: 'JK Rowling'}).select('id')}
+  ];
+
   return knex('books').del()
+    .then(function(){
+      return knex('fans').del();
+    })
     .then(function(){
       return knex('authors').del();
     })
@@ -40,6 +54,9 @@ exports.seed = function(knex, Promise) {
     })
     .then(function(){
       return knex('authors').insert(authors, 'id');
+    })
+    .then(function(){
+      return knex('fans').insert(fans, 'id');
     })
     .then(function(){
       return knex('books').insert(books, 'id');
