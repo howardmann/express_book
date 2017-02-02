@@ -99,6 +99,31 @@ describe('Publishers', function(){
       });
   });
 
+  it('should update a SINGLE publisher on /publishers/:id PUT', function(done){
+    chai.request(app)
+      .put('/publishers/1')
+      .send({
+        data: {
+          type: 'publishers',
+          attributes: {
+            name: 'IKEA',
+            country: 'Sweden'
+          }
+        }
+      })
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('data');
+        res.body.data.should.have.property('attributes');
+        res.body.data.attributes.name.should.equal('IKEA');
+        res.body.data.attributes.should.have.property('country');
+        res.body.data.attributes.country.should.equal('Sweden');
+        done();
+      })
+  });
+
 });
 
 describe('Authors', function(){

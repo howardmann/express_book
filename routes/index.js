@@ -41,6 +41,8 @@ router
   .get('/publishers', publishers.index)
   .post('/publishers', publishers.create)
   .get('/publishers/:id', publishers.show)
+  .put('/publishers/:id', publishers.update)
+  .patch('/publishers/:id', publishers.update)
 
 // AUTHORS API FORMAT
 router

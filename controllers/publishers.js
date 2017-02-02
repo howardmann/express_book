@@ -106,11 +106,34 @@ exports.show = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
+  let data = req.body.data;
   Publisher
     .query()
     .insertAndFetch({
-      name: req.body.data.attributes.name,
-      country: req.body.data.attributes.country
+      name: data.attributes.name,
+      country: data.attributes.country
+    })
+    .then(function(publisher){
+      res.json({
+        data: {
+          type: 'publishers',
+          id: publisher.id,
+          attributes: {
+            name: publisher.name,
+            country: publisher.country
+          }
+        }
+      });
+    }, next)
+};
+
+exports.update = function(req, res, next){
+  let data = req.body.data;
+  Publisher
+    .query()
+    .patchAndFetchById(req.params.id, {
+      name: data.attributes.name,
+      country: data.attributes.country
     })
     .then(function(publisher){
       res.json({
