@@ -148,3 +148,26 @@ exports.update = function(req, res, next){
       });
     }, next)
 };
+
+exports.destroy = function(req, res, next) {
+  Publisher
+    .query()
+    .findById(req.params.id)
+    .then(function(publisher){
+      Publisher
+      .query()
+      .deleteById(req.params.id)
+      .then(function(){
+        res.json({
+          data: {
+            type: 'publishers',
+            id: publisher.id,
+            attributes: {
+              name: publisher.name,
+              country: publisher.country
+            }
+          }
+        });        
+      });
+    }, next)
+};

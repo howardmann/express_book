@@ -43,6 +43,7 @@ router
   .get('/publishers/:id', publishers.show)
   .put('/publishers/:id', publishers.update)
   .patch('/publishers/:id', publishers.update)
+  .delete('/publishers/:id', publishers.destroy)
 
 // AUTHORS API FORMAT
 router

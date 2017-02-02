@@ -124,6 +124,30 @@ describe('Publishers', function(){
       })
   });
 
+  it('should delete a SINGLE publisher on /publishers/:id DELETE', function(done){
+    chai.request(app)
+      .delete('/publishers/1')
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.data.should.have.property('attributes');
+        res.body.data.attributes.name.should.equal('Random House');
+        res.body.data.attributes.should.have.property('country');
+        res.body.data.attributes.country.should.equal('UK');
+        chai.request(app)
+          .get('/publishers')
+          .end(function(err, res){
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.data.should.be.a('array');
+            res.body.data.length.should.equal(3);
+            done();
+          });
+      });
+  });
+
+
 });
 
 describe('Authors', function(){
